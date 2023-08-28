@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import pandas as pd
 
 class MovieScraper:
 
@@ -27,12 +28,18 @@ class MovieScraper:
             }
             self.movies_dict.append(movie_data)
 
+    def present_data(self):
+        if not self.movies_dict:
+            raise ValueError("Movie data not available. Call get_movie_list() and movie_dict_creator() first.")
+        return pd.DataFrame(self.movies_dict)
+
 def main():
     url = "https://editorial.rottentomatoes.com/guide/movies-100-percent-score-rotten-tomatoes/"
     test1 = MovieScraper(url)
     test1.get_movie_list()
     test1.movie_dict_creator()
-    print(test1.movies_dict)
+    movies_dataframe = test1.present_data()
+    print(movies_dataframe)
 
 if __name__ == '__main__':
     main()
